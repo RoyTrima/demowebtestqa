@@ -4,6 +4,7 @@ function DemoApp() {
     const [password, setPassword] = React.useState("");
     const [error, setError] = React.useState("");
     const [cart, setCart] = React.useState([]);
+    const [popup, setPopup] = React.useState("");
   
     const products = [
       { id: 1, name: "Celana Osi" },
@@ -29,17 +30,26 @@ function DemoApp() {
       setPage("login");
     };
   
+    const showPopup = (msg, duration = 2000) => {
+      setPopup(msg);
+      setTimeout(() => setPopup(""), duration);
+    };
+  
     const addToCart = (p) => {
       setCart([...cart, p]);
-      alert(`Product "${p.name}" berhasil ditambahkan ke cart!`);
+      showPopup(`Product "${p.name}" berhasil ditambahkan!`);
     };
   
     const removeFromCart = (id) => {
+      const removed = cart.find(c => c.id === id);
       setCart(cart.filter((c) => c.id !== id));
+      showPopup(`Product "${removed.name}" dihapus dari cart`);
     };
   
     return (
       <div className="container">
+        {popup && <div className="popup">{popup}</div>}
+  
         {page === "login" && (
           <div className="card">
             <div className="logo">
@@ -58,8 +68,10 @@ function DemoApp() {
             <div className="logo">
               <img src="logo.png" alt="Demo Logo" />
             </div>
-            <h1>Demo Shop</h1>
-            <button onClick={handleLogout} style={{float: "right", marginBottom: "10px"}}>Logout</button>
+            <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+              <h1>Demo Shop</h1>
+              <button onClick={handleLogout} style={{marginLeft: "auto"}}>Logout</button>
+            </div>
   
             <h2>Products</h2>
             {products.map((p) => (
