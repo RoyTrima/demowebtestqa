@@ -22,8 +22,16 @@ function DemoApp() {
       }
     };
   
+    const handleLogout = () => {
+      setEmail("");
+      setPassword("");
+      setCart([]);
+      setPage("login");
+    };
+  
     const addToCart = (p) => {
       setCart([...cart, p]);
+      alert(`Product "${p.name}" berhasil ditambahkan ke cart!`);
     };
   
     const removeFromCart = (id) => {
@@ -34,6 +42,9 @@ function DemoApp() {
       <div className="container">
         {page === "login" && (
           <div className="card">
+            <div className="logo">
+              <img src="logo.png" alt="Demo Logo" />
+            </div>
             <h1>Demo Login</h1>
             <input placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} data-testid="email-input"/>
             <input placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} data-testid="password-input"/>
@@ -44,7 +55,11 @@ function DemoApp() {
   
         {page === "shop" && (
           <div className="card">
+            <div className="logo">
+              <img src="logo.png" alt="Demo Logo" />
+            </div>
             <h1>Demo Shop</h1>
+            <button onClick={handleLogout} style={{float: "right", marginBottom: "10px"}}>Logout</button>
   
             <h2>Products</h2>
             {products.map((p) => (
