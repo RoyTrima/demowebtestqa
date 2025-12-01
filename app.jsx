@@ -30,20 +30,44 @@ function DemoApp() {
       setPage("login");
     };
   
-    const showPopup = (msg, duration = 2000) => {
+    const showPopup = (msg, duration = 3000) => {
       setPopup(msg);
       setTimeout(() => setPopup(""), duration);
     };
   
     const addToCart = (p) => {
+      if (cart.find(c => c.id === p.id)) {
+        showPopup(`Product "${p.name}" sudah ditambahkan!`, 2500);
+        return;
+      }
       setCart([...cart, p]);
-      showPopup(`Product "${p.name}" berhasil ditambahkan!`);
+      showPopup(`Product "${p.name}" berhasil ditambahkan!`, 3000);
     };
   
     const removeFromCart = (id) => {
       const removed = cart.find(c => c.id === id);
-      setCart(cart.filter((c) => c.id !== id));
-      showPopup(`Product "${removed.name}" dihapus dari cart`);
+      if (!removed) return;
+      setCart(cart.filter(c => c.id !== id));
+      showPopup(`Product "${removed.name}" dihapus dari cart`, 2500);
+    };
+  
+    const addAllProducts = () => {
+      const newProducts = products.filter(p => !cart.find(c => c.id === p.id));
+      if (newProducts.length === 0) {
+        showPopup("Semua product sudah ditambahkan!", 2500);
+        return;
+      }
+      setCart([...cart, ...newProducts]);
+      showPopup("Semua product berhasil ditambahkan!", 3000);
+    };
+  
+    const removeAllProducts = () => {
+      if (cart.length === 0) {
+        showPopup("Cart kosong!", 2500);
+        return;
+      }
+      setCart([]);
+      showPopup("Semua product dihapus dari cart", 3000);
     };
   
     return (
@@ -68,9 +92,7 @@ function DemoApp() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               data-testid="password-input"
-              onKeyDown={(e) => {
-                if (e.key === "Enter") handleLogin();
-              }}
+              onKeyDown={(e) => { if (e.key === "Enter") handleLogin(); }}
             />
             {error && <div className="error" data-testid="login-error">{error}</div>}
             <button onClick={handleLogin} data-testid="login-button">Login</button>
@@ -88,6 +110,11 @@ function DemoApp() {
             </div>
   
             <h2>Products</h2>
+            <div style={{marginBottom: "10px"}}>
+              <button onClick={addAllProducts}>Add All Products</button>
+              <button onClick={removeAllProducts} style={{marginLeft: "10px"}}>Remove All Products</button>
+            </div>
+  
             {products.map((p) => (
               <div key={p.id} className="row">
                 <span>{p.name}</span>
