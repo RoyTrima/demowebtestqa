@@ -30,61 +30,50 @@ function DemoApp() {
       setPage("login");
     };
   
-    // Popup dengan durasi 5 detik, bisa di-close saat diklik
-    const showPopup = (msg) => {
+    const showPopup = (msg, duration = 3000) => {
       setPopup(msg);
-  
-      const timer = setTimeout(() => setPopup(""), 5000);
-  
-      // Jika user klik popup, langsung hilang
-      return () => clearTimeout(timer);
+      setTimeout(() => setPopup(""), duration);
     };
   
     const addToCart = (p) => {
       if (cart.find(c => c.id === p.id)) {
-        showPopup(`Product "${p.name}" sudah ditambahkan!`);
+        showPopup(`Product "${p.name}" sudah ditambahkan!`, 2500);
         return;
       }
       setCart([...cart, p]);
-      showPopup(`Product "${p.name}" berhasil ditambahkan!`);
+      showPopup(`Product "${p.name}" berhasil ditambahkan!`, 3000);
     };
   
     const removeFromCart = (id) => {
       const removed = cart.find(c => c.id === id);
       if (!removed) return;
       setCart(cart.filter(c => c.id !== id));
-      showPopup(`Product "${removed.name}" dihapus dari cart`);
+      showPopup(`Product "${removed.name}" dihapus dari cart`, 2500);
     };
   
     const addAllProducts = () => {
       const newProducts = products.filter(p => !cart.find(c => c.id === p.id));
       if (newProducts.length === 0) {
-        showPopup("Semua product sudah ditambahkan!");
+        showPopup("Semua product sudah ditambahkan!", 2500);
         return;
       }
       setCart([...cart, ...newProducts]);
-      showPopup("Semua product berhasil ditambahkan!");
+      showPopup("Semua product berhasil ditambahkan!", 3000);
     };
   
     const removeAllProducts = () => {
       if (cart.length === 0) {
-        showPopup("Cart kosong!");
+        showPopup("Cart kosong!", 2500);
         return;
       }
       setCart([]);
-      showPopup("Semua product dihapus dari cart");
+      showPopup("Semua product dihapus dari cart", 3000);
     };
   
     return (
       <div className="container">
-        {/* Popup */}
-        {popup && (
-          <div className="popup" onClick={() => setPopup("")}>
-            {popup}
-          </div>
-        )}
+        {popup && <div className="popup">{popup}</div>}
   
-        {/* Login Page */}
         {page === "login" && (
           <div className="card">
             <div className="logo">
@@ -110,21 +99,20 @@ function DemoApp() {
           </div>
         )}
   
-        {/* Shop Page */}
         {page === "shop" && (
           <div className="card">
             <div className="logo">
               <img src="logo.png" alt="Demo Logo" />
             </div>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
               <h1>Demo Shop</h1>
               <button className="logout-button" onClick={handleLogout}>Logout</button>
             </div>
   
             <h2>Products</h2>
-            <div style={{ marginBottom: "10px" }}>
+            <div style={{marginBottom: "10px"}}>
               <button onClick={addAllProducts}>Add All Products</button>
-              <button onClick={removeAllProducts} style={{ marginLeft: "10px" }}>Remove All Products</button>
+              <button onClick={removeAllProducts} style={{marginLeft: "10px"}}>Remove All Products</button>
             </div>
   
             {products.map((p) => (
