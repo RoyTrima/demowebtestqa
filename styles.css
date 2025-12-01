@@ -5,3 +5,8 @@ input { width: 100%; padding: 8px; margin: 8px 0; }
 button { padding: 8px 14px; margin-top: 10px; }
 .row { display: flex; justify-content: space-between; padding: 8px 0; }
 .error { color: red; }
+.logo img {
+    display: block;
+    margin: 0 auto 15px auto;
+    width: 100px;
+  }
