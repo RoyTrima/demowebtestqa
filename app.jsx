@@ -56,8 +56,22 @@ function DemoApp() {
               <img src="logo.png" alt="Demo Logo" />
             </div>
             <h1>Demo Login</h1>
-            <input placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} data-testid="email-input"/>
-            <input placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} data-testid="password-input"/>
+            <input
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              data-testid="email-input"
+            />
+            <input
+              placeholder="Password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              data-testid="password-input"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleLogin();
+              }}
+            />
             {error && <div className="error" data-testid="login-error">{error}</div>}
             <button onClick={handleLogin} data-testid="login-button">Login</button>
           </div>
@@ -70,7 +84,7 @@ function DemoApp() {
             </div>
             <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
               <h1>Demo Shop</h1>
-              <button onClick={handleLogout} style={{marginLeft: "auto"}}>Logout</button>
+              <button className="logout-button" onClick={handleLogout}>Logout</button>
             </div>
   
             <h2>Products</h2>
